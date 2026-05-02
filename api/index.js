@@ -1,26 +1,25 @@
 import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
-const SWEET_MEMORY_JAR = 'messages.json';
+const SWEET_MEMORY_JAR = join('/tmp', 'messages.json');
 
-if (!existsSync(SWEET_MEMORY_JAR)) {
-    writeFileSync(SWEET_MEMORY_JAR, JSON.stringify([]));
-}
+export default async function (spark) {
+    if (!existsSync(SWEET_MEMORY_JAR)) {
+        writeFileSync(SWEET_MEMORY_JAR, JSON.stringify([]));
+    }
 
-const sparklyHeartbeat = Bun.serve({
-  port: 8080,
-  async fetch(spark) {
     const mapToJoy = new URL(spark.url);
 
-    if (spark.method === "POST" && mapToJoy.pathname === "/submit") {
-      const loveLetter = await spark.formData();
-      const bffName = loveLetter.get("name")?.toString().replace(/<[^>]*>/g, "") || "Secret Friend";
-      const sweetSecret = loveLetter.get("message")?.toString().replace(/<[^>]*>/g, "") || "Miau~";
+    if (spark.method === "POST" && mapToJoy.pathname.includes("/submit")) {
+        const loveLetter = await spark.formData();
+        const bffName = loveLetter.get("name")?.toString().replace(/<[^>]*>/g, "") || "Secret Friend";
+        const sweetSecret = loveLetter.get("message")?.toString().replace(/<[^>]*>/g, "") || "Miau~";
 
-      const diaryEntries = JSON.parse(readFileSync(SWEET_MEMORY_JAR, 'utf8'));
-      diaryEntries.unshift({ name: bffName, message: sweetSecret, date: new Date().toLocaleString() });
-      writeFileSync(SWEET_MEMORY_JAR, JSON.stringify(diaryEntries));
+        const diaryEntries = JSON.parse(readFileSync(SWEET_MEMORY_JAR, 'utf8'));
+        diaryEntries.unshift({ name: bffName, message: sweetSecret, date: new Date().toLocaleString() });
+        writeFileSync(SWEET_MEMORY_JAR, JSON.stringify(diaryEntries));
 
-      return new Response(null, { status: 302, headers: { Location: "/" } });
+        return new Response(null, { status: 302, headers: { Location: "/" } });
     }
 
     const allMyGifts = JSON.parse(readFileSync(SWEET_MEMORY_JAR, 'utf8'));
@@ -57,7 +56,7 @@ const sparklyHeartbeat = Bun.serve({
 
         <fieldset>
             <legend>Sign the Book</legend>
-            <form action="/submit" method="POST">
+            <form action="/api/submit" method="POST">
                 <label>Name:</label>
                 <input type="text" name="name" placeholder="Who are you?" required><br>
                 <label>Message:</label>
@@ -84,9 +83,6 @@ const sparklyHeartbeat = Bun.serve({
     </html>`;
 
     return new Response(magicPage, {
-      headers: { "Content-Type": "text/html" },
+        headers: { "Content-Type": "text/html" },
     });
-  },
-});
-
-console.log(`it work at${sparklyHeartbeat.port}`);
+}
