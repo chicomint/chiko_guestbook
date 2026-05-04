@@ -1,10 +1,12 @@
 # chiko_guestbook
 A Guestbook system using nodejs&amp;Bun for my site!&lt;3
 
-
+<img src="1.png"></img>
+<img src="2.png"></img>
 <hr>
 <h1>How to use?</h1>
-<p>Clone this git and go to the file then run : "bun index.js"</p>
+<p>Clone this git and go to the file then run : "bun install" and  "bun add @elysiajs/html"</p>
+<p>to deploy that using: "bun src/index.ts"</p>
 <p>look at "localhost:8080" </p>
 <p>(≧◡≦) ♡</p>
 
