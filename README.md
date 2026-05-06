@@ -1,4 +1,4 @@
-#  Chicomint's Guestbook (MongoDB Edition)
+#  Chicomint's Guestbook 
 
 A guestbook system built with **Bun**, **ElysiaJS**, and **MongoDB**.
 
