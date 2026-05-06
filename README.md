@@ -12,3 +12,7 @@ A Guestbook system using nodejs&amp;Bun for my site!&lt;3
 
 <br>
 <p>The message will keep to a messages.json file.</p>
+
+
+<h1>**hey!! I want to connect to mongodb,can I ?</h1>
+<p>Sure!! can you check <a href="https://github.com/chicomint/chiko_guestbook/tree/mongodb-version">mongodb-version</a> </p>
