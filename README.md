@@ -1,4 +1,3 @@
- mongodb-version
 #  Chicomint's Guestbook 
 
 A guestbook system built with **Bun**, **ElysiaJS**, and **MongoDB**.
