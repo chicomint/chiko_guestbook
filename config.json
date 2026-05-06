@@ -1,4 +1,4 @@
 {
-  "mongoUri": "mongodb://127.0.0.1:27017/guestbook",
+  "mongoUri": "your_mongodb_connection_string",
   "collectionName": "messages"
 }
