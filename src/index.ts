@@ -1,17 +1,24 @@
 import { Elysia, t } from 'elysia'; 
 import { html } from '@elysiajs/html';
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { MongoClient } from 'mongodb';
+import { readFileSync, existsSync } from 'fs';
 
-const SWEET_MEMORY_JAR = 'messages.json';
-
-if (!existsSync(SWEET_MEMORY_JAR)) {
-    writeFileSync(SWEET_MEMORY_JAR, JSON.stringify([]));
+let config = { mongoUri: "mongodb://127.0.0.1:27017/guestbook", collectionName: "messages" };
+if (existsSync('config.json')) {
+    config = JSON.parse(readFileSync('config.json', 'utf8'));
 }
+
+const client = new MongoClient(config.mongoUri);
+const db = client.db();
+const collection = db.collection(config.collectionName);
+
+await client.connect();
+console.log("Connected to MongoDB!");
 
 const app = new Elysia()
     .use(html())
-    .get("/", () => {
-        const allMyGifts: any[] = JSON.parse(readFileSync(SWEET_MEMORY_JAR, 'utf8'));
+    .get("/", async () => {
+        const allMyGifts = await collection.find({}).sort({ _id: -1 }).toArray();
         const sparklyContent = allMyGifts.map((gift: any) => `
             <div style="border-bottom: 1px dashed #7fb82a; margin-bottom: 10px; padding-bottom: 5px;">
                 <strong>${gift.name}</strong> <small style="opacity:0.6;">(${gift.date})</small><br>
@@ -70,14 +77,12 @@ const app = new Elysia()
         </body>
         </html>`; 
     })
-    .post("/submit", ({ body, redirect }: { body: any, redirect: any }) => {
-        const diaryEntries = JSON.parse(readFileSync(SWEET_MEMORY_JAR, 'utf8'));
-        diaryEntries.unshift({ 
+    .post("/submit", async ({ body, redirect }: { body: any, redirect: any }) => {
+        await collection.insertOne({ 
             name: body.name?.toString().replace(/<[^>]*>/g, "") || "Secret Friend", 
             message: body.message?.toString().replace(/<[^>]*>/g, "") || "Miau~", 
             date: new Date().toLocaleString() 
         });
-        writeFileSync(SWEET_MEMORY_JAR, JSON.stringify(diaryEntries));
         return redirect("/");
     })
     .listen(process.env.PORT || 8080);

@@ -1,4 +1,4 @@
-# chiko_guestbook
+# chiko_guestbook_mongodb-version
 A Guestbook system using nodejs&amp;Bun for my site!&lt;3
 
 <img src="1.png"  width="300" height="300"></img>
@@ -10,5 +10,10 @@ A Guestbook system using nodejs&amp;Bun for my site!&lt;3
 <p>look at "localhost:8080" </p>
 <p>(≧◡≦) ♡</p>
 
-<br>
-<p>The message will keep to a messages.json file.</p>
+
+<h3>Configuration</h3>
+<p>You can configure your MongoDB connection in <code>config.json</code>:</p>
+<pre><code>{
+  "mongoUri": "mongodb://127.0.0.1:27017/guestbook",
+  "collectionName": "messages"
+}</code></pre>
