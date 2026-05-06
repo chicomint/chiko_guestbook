@@ -1,0 +1,4 @@
+{
+  "mongoUri": "your_mongodb_connection_string",
+  "collectionName": "messages"
+}
