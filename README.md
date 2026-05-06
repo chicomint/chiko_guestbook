@@ -1,7 +1,7 @@
 #  Chicomint's Guestbook 
 
 A guestbook system built with **Bun**, **ElysiaJS**, and **MongoDB**.<br>
-for my site! :3
+<p>for my site! :3</p>
 <img src="1.png"  width="300" height="300"></img>
 <img src="2.png"  width="300" height="300"></img>
 ## Quick Start
