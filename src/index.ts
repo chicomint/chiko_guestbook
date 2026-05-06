@@ -17,21 +17,21 @@ try {
     console.log(`Attempting to connect to Remote MongoDB...`);
     await client.connect();
     collection = client.db().collection(config.collectionName);
-    console.log("✅ Connected successfully to Remote MongoDB!");
+    console.log(" Connected successfully to Remote MongoDB!");
 } catch (err: any) {
-    console.error("❌ Remote MongoDB connection failed.");
+    console.error(" Remote MongoDB connection failed.");
     console.error("Error Message:", err.message);
-    console.log("🔄 Attempting to connect to Local MongoDB (127.0.0.1:27017)...");
+    console.log(" Attempting to connect to Local MongoDB (127.0.0.1:27017)...");
     
     try {
         const localClient = new MongoClient("mongodb://127.0.0.1:27017/guestbook");
         await localClient.connect();
         collection = localClient.db().collection(config.collectionName);
         isLocalFallback = true;
-        console.log("✅ Connected to Local MongoDB fallback!");
+        console.log(" Connected to Local MongoDB fallback!");
     } catch (localErr) {
-        console.error("❌ Local MongoDB also failed.");
-        console.log("🚀 Starting in MOCK MODE (In-memory storage). Data will not be saved permanently.");
+        console.error(" Local MongoDB also failed.");
+        console.log(" Starting in MOCK MODE (In-memory storage). Data will not be saved permanently.");
         isMockMode = true;
         
         // Mock collection implementation
@@ -123,5 +123,5 @@ const app = new Elysia()
         return redirect("/");
     })
     .listen(process.env.PORT || 8080, ({ hostname, port }) => {
-        console.log(`🦊 Elysia is running at http://${hostname}:${port}`);
+        console.log(` is running at http://${hostname}:${port}`);
     });
